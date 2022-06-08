@@ -1,8 +1,12 @@
 package com.restaurante.controller;
 
+
 import java.util.List;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.gson.GsonAutoConfiguration;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,6 +26,8 @@ import com.restaurante.service.PackService;
 @CrossOrigin("*")
 public class PackController {
 	
+	Logger logger = LoggerFactory.getLogger(PackController.class);
+	
 	@Autowired
 	private PackService packService;
 	
@@ -30,12 +36,17 @@ public class PackController {
 	@PostMapping("/savePack/{id}")
 	public ResponseEntity<Pack>guardarUser(@RequestBody Pack pack ,@PathVariable("id") Long packId ){
 		
+		
 		Pack pack2 = packService.savePack(pack, packId);
 		
 		if (pack2 == null) {
-		return ResponseEntity.noContent().build();	
+		logger.error("No existe el id: "+packId);
+		return ResponseEntity.noContent().build();
+		
 		}else {
+			logger.info(" Pack Creado correctamente: "+pack.getDescripcion()+" "+pack.getDireccion());
 			return ResponseEntity.ok(pack2);
+			
 		}
 		
 		

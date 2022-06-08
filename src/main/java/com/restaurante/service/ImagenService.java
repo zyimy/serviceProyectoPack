@@ -43,15 +43,18 @@ public class ImagenService {
 	}
 	
 	public List<Imagen>allNombre(Long id_pack){
-		List<Imagen>lista =imagenRepository.getByPackImagen(id_pack);
-		
-		if (lista.isEmpty()) {
-			return null;
-			
-		}else {
+		Pack pack = packRepository.findById(id_pack).orElse(null);
+		if (pack !=null) {
+			List<Imagen>lista =imagenRepository.getByPackImagen(id_pack);
 			return lista;
+		} else {
+		
+			return null;
+			}
+
 		}
-	}
+
+	
 	
 
 

@@ -13,8 +13,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.restaurante.entity.Imagen;
-import com.restaurante.entity.Pack;
+
 import com.restaurante.service.ImagenService;
+import com.restaurante.service.PackService;
 
 @RestController
 @RequestMapping("/imagen")
@@ -23,6 +24,9 @@ public class ImagenController {
 	
 	@Autowired
 	private ImagenService imagenService;
+	
+	@Autowired
+	private PackService packService;
 	
 	
 	@PostMapping("/saveImagen/{idPack}")

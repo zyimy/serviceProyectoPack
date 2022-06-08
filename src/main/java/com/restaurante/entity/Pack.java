@@ -1,7 +1,5 @@
 package com.restaurante.entity;
 
-
-
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -20,7 +18,6 @@ import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
 import com.fasterxml.jackson.annotation.JsonBackReference;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
@@ -32,7 +29,7 @@ import lombok.NoArgsConstructor;
 @Data
 @NoArgsConstructor
 @JsonIgnoreProperties({"hibernateLazyInitializer", "handler"})
-public class Pack  {
+public class Pack {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -43,6 +40,10 @@ public class Pack  {
 	private String descripcion;
 	
 	private String imagen;
+	
+	private String status;
+	
+	private String hora_disponible;
 	
 	private String direccion;
 	
