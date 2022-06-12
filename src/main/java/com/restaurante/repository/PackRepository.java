@@ -14,8 +14,8 @@ import com.restaurante.entity.Restaurante;
 @Repository
 public interface PackRepository extends JpaRepository<Pack, Long> {
 	
-	@Query("FROM Pack where restaurante.id_restaurante =:id_restaurante")
-	List<Pack>getByPackRestaurante(Long id_restaurante);
+	@Query("FROM Pack where restaurante.idRestaurante =:idRestaurante")
+	List<Pack>getByPackRestaurante(Long idRestaurante);
 	
 	
 	@Query("FROM Pack  where restaurante.id >=1")

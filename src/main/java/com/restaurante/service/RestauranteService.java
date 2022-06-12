@@ -6,11 +6,15 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
+import com.restaurante.config.BadRequestException;
 import com.restaurante.dto.RestauranteDto;
 import com.restaurante.entity.Pack;
 import com.restaurante.entity.Restaurante;
 import com.restaurante.entity.User;
+import com.restaurante.mapper.RestauranteMapper;
+import com.restaurante.model.PackModel;
 import com.restaurante.repository.RestauranteRepository;
 
 
@@ -20,14 +24,25 @@ public class RestauranteService {
 	@Autowired
 	private RestauranteRepository restauranteRepository;
 	
+	@Autowired
+	private RestTemplate restTemplate;
+	
+	@Autowired
+	private RestauranteMapper restauranteMapper;
+	
 	
 
 	
-	public Restaurante saveRestaurante(RestauranteDto restaurante) {
-	    //Pack pack = new Pack();
-	    //pack.setRestaurante(restaurante.getRestaurante());
-	    //restaurante.getRestaurante().addPacks(pack);
-		return restauranteRepository.save(restaurante.getRestaurante());
+	public RestauranteDto saveRestaurante(RestauranteDto restauranteDto) {
+		
+		
+		
+		Restaurante restaurante = restauranteMapper.restauranteToRestauranteDto(restauranteDto);
+		
+		restaurante.setDisponible(true);
+		restauranteRepository.save(restaurante);
+		
+		return restauranteMapper.restauranteDtoToRestaurante(restaurante);
 		
 	}
 	
@@ -42,14 +57,14 @@ public class RestauranteService {
 		
 	}
 	
-	public List<Restaurante>allLista(){
+	public List<RestauranteDto>allLista(){
 		List<Restaurante>lista =restauranteRepository.findAll();
 		
 		if (lista.isEmpty()) {
-			return null;
+			throw new BadRequestException("Lista vacia");
 			
 		}else {
-			return lista;
+			return restauranteMapper.restauranteDtoToRestaurante(lista);
 		}
 	}
 	
@@ -62,5 +77,19 @@ public class RestauranteService {
 		}else {
 			return lista;
 		}
+	}
+	
+	
+	public List<PackModel>listaPack(Long idRestaurante){
+		
+		List<PackModel>lista = restTemplate.getForObject("http://localhost:8002/pack/getPack/"+idRestaurante, List.class);
+		
+		return lista;
+	}
+	
+	public PackModel createPack(PackModel packModel,Long idRestaurante) {
+		PackModel pack = restTemplate.postForObject("http://localhost:8002/pack",packModel,PackModel.class);
+		
+		return pack;
 	}
 }
