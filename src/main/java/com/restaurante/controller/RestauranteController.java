@@ -17,6 +17,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.restaurante.dto.RestauranteDto;
 import com.restaurante.entity.Restaurante;
 import com.restaurante.entity.User;
+import com.restaurante.model.PackModel;
 import com.restaurante.service.RestauranteService;
 
 
@@ -32,9 +33,9 @@ public class RestauranteController {
 	
 	
 	@PostMapping
-	public ResponseEntity<Restaurante>save(@RequestBody RestauranteDto restaurante){
+	public ResponseEntity<RestauranteDto>save(@RequestBody RestauranteDto restauranteDto){
 		
-	return ResponseEntity.ok(restauranteService.saveRestaurante(restaurante));
+	return ResponseEntity.ok(restauranteService.saveRestaurante(restauranteDto));
 			
 	}
 	
@@ -62,8 +63,8 @@ public class RestauranteController {
 	
 	
 	@GetMapping("/lista")
-	public ResponseEntity<List<Restaurante>>listaPack(){
-		List<Restaurante>lista = restauranteService.allLista();
+	public ResponseEntity<List<RestauranteDto>>listaPack(){
+		List<RestauranteDto>lista = restauranteService.allLista();
 		
 		if (lista.isEmpty()) {
 			
@@ -86,6 +87,29 @@ public class RestauranteController {
 			return ResponseEntity.ok(lista);
 		}
 	}
+	
+	
+	@GetMapping("/getPacks/{idRestaurante}")
+	public ResponseEntity<List<PackModel>>listPack(@PathVariable("idRestaurante")Long idRestaurante) {
+		
+		List<PackModel>lista = restauranteService.listaPack(idRestaurante);
+		
+		if (lista.isEmpty()) {
+			return ResponseEntity.noContent().build();
+		}else {
+			return ResponseEntity.ok(lista);
+		}
+		
+	}
+	
+	
+	@PostMapping("/createPack/{idRestaurante}")
+	public ResponseEntity<PackModel>savePack(@RequestBody PackModel packModel,@PathVariable("idRestaurante")Long idRestaurante){
+		
+	 return ResponseEntity.ok(restauranteService.createPack(packModel, idRestaurante));
+			
+	}
+	
 	
 
 }

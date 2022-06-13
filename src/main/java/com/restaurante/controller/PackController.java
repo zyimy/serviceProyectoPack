@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.restaurante.dto.PackDto;
 import com.restaurante.entity.Pack;
 import com.restaurante.entity.Restaurante;
 import com.restaurante.entity.User;
@@ -34,18 +35,18 @@ public class PackController {
 
 	
 	@PostMapping("/savePack/{id}")
-	public ResponseEntity<Pack>guardarUser(@RequestBody Pack pack ,@PathVariable("id") Long packId ){
+	public ResponseEntity<PackDto>guardarUser(@RequestBody PackDto packDto ,@PathVariable("id") Long packId ){
 		
 		
-		Pack pack2 = packService.savePack(pack, packId);
+		 packDto = packService.savePack(packDto, packId);
 		
-		if (pack2 == null) {
+		if (packDto == null) {
 		logger.error("No existe el id: "+packId);
 		return ResponseEntity.noContent().build();
 		
 		}else {
-			logger.info(" Pack Creado correctamente: "+pack.getDescripcion()+" "+pack.getDireccion());
-			return ResponseEntity.ok(pack2);
+			logger.info(" Pack Creado correctamente: "+packDto.getDescripcion()+" "+packDto.getDireccion());
+			return ResponseEntity.ok(packDto);
 			
 		}
 		
@@ -53,8 +54,8 @@ public class PackController {
 	}
 	
 	@GetMapping("/lista")
-	public ResponseEntity<List<Pack>>listaPack(){
-		List<Pack>lista = packService.allLista();
+	public ResponseEntity<List<PackDto>>listaPack(){
+		List<PackDto>lista = packService.allLista();
 		
 		if (lista.isEmpty()) {
 			
