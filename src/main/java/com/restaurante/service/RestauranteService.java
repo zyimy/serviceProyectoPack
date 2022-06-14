@@ -73,14 +73,14 @@ public class RestauranteService {
 
 	public List<PackModel> listaPack(Long idRestaurante) {
 
-		List<PackModel> lista = restTemplate.getForObject("http://localhost:8002/pack/getPack/" + idRestaurante,
+		List<PackModel> lista = restTemplate.getForObject("http://service-packs/pack/getPack/" + idRestaurante,
 				List.class);
 
 		return lista;
 	}
 
 	public PackModel createPack(PackModel packModel, Long idRestaurante) {
-		PackModel pack = restTemplate.postForObject("http://localhost:8002/pack", packModel, PackModel.class);
+		PackModel pack = restTemplate.postForObject("http://service-packst/pack", packModel, PackModel.class);
 
 		return pack;
 	}
